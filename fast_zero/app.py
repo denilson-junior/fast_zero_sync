@@ -3,7 +3,7 @@ from http import HTTPStatus
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse
 
-from fast_zero.schemas import UserDB, UserList, UserPublic, UserSchema
+from fast_zero.schemas import Message, UserDB, UserList, UserPublic, UserSchema
 
 app = FastAPI()
 
@@ -56,3 +56,14 @@ def update_user(user_id: int, user: UserSchema):
 
     return user_with_id
 
+
+@app.delete('/users/{user_id}', response_model=Message)
+def delete_user(user_id: int):
+    if user_id > len(database) or user_id < 1:
+        raise HTTPException(
+            status_code=HTTPStatus.NOT_FOUND, detail='User not found'
+        )
+
+    del database[user_id - 1]
+
+    return {'message': 'User deleted'}
