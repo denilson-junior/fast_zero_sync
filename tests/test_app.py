@@ -75,9 +75,7 @@ def test_get_user_by_id_not_found(client):
     response = client.get('/user/999')
 
     assert response.status_code == HTTPStatus.NOT_FOUND
-    assert response.json() == {
-        'detail': 'User not found'
-    }
+    assert response.json() == {'detail': 'User not found'}
 
 
 def test_update_user_not_found(client):
